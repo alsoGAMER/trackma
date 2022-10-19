@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QDoubleSpinBox, QStyle, QStyleOptionProgressBar, QStyledItemDelegate
+from PyQt6 import QtCore, QtGui
+from PyQt6.QtWidgets import QDoubleSpinBox, QStyle, QStyleOptionProgressBar, QStyledItemDelegate
 
 from trackma.ui.qt.util import getColor
 

@@ -16,8 +16,8 @@
 
 import os
 
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import (QAbstractItemView, QGridLayout, QHeaderView, QLabel, QListView, QScrollArea, QSplitter,
+from PyQt6 import QtCore, QtGui
+from PyQt6.QtWidgets import (QAbstractItemView, QGridLayout, QHeaderView, QLabel, QListView, QScrollArea, QSplitter,
                              QTableView, QVBoxLayout, QWidget)
 
 from trackma import utils
@@ -25,7 +25,7 @@ from trackma.ui.qt.delegates import AddListDelegate, ShowsTableDelegate
 from trackma.ui.qt.models import AddListModel, AddListProxy, AddTableModel, ShowListModel, ShowListProxy
 from trackma.ui.qt.workers import ImageWorker
 
-pyqt_version = 5
+pyqt_version = 6
 
 
 class DetailsWidget(QWidget):

@@ -1,7 +1,7 @@
 import os
 import queue
 
-from PyQt5 import QtCore, QtGui, QtNetwork
+from PyQt6 import QtCore, QtGui, QtNetwork
 
 ATTRIB_FILE = 1000
 ATTRIB_ID = 1001

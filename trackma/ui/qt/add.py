@@ -16,15 +16,15 @@
 
 from datetime import date
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QHBoxLayout, QLineEdit, QMessageBox, QPushButton,
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QHBoxLayout, QLineEdit, QMessageBox, QPushButton,
                              QRadioButton, QSpinBox, QSplitter, QStackedWidget, QVBoxLayout)
 
 from trackma import utils
 from trackma.ui.qt.details import DetailsDialog
 from trackma.ui.qt.widgets import AddCardView, AddTableDetailsView
 
-pyqt_version = 5
+pyqt_version = 6
 
 
 class AddDialog(QDialog):

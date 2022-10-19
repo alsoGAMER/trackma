@@ -22,7 +22,7 @@ from trackma import utils
 from trackma.ui.qt.mainwindow import MainWindow
 
 
-def main(force_qt4=False):
+def main(force_qt4=False, force_qt6=False):
     print("Trackma-qt v{}".format(utils.VERSION))
 
     debug = False
@@ -33,6 +33,7 @@ def main(force_qt4=False):
         print('Options:')
         print(' -d  Shows debugging information')
         print(' -4  Force Qt4')
+        print(' -6  Force Qt6')
         print(' -h  Shows this help')
         sys.exit(0)
     if '-d' in sys.argv:
@@ -41,6 +42,9 @@ def main(force_qt4=False):
     if '-4' in sys.argv:
         print('Forcing Qt4.')
         force_qt4 = True
+    if '-6' in sys.argv:
+        print('Forcing Qt6.')
+        force_qt6 = True
 
     if not force_qt4:
         try:
@@ -59,7 +63,27 @@ def main(force_qt4=False):
             print("Couldn't import Qt4 dependencies. "
                   "Make sure you installed the PyQt4 package.")
             sys.exit(-1)
-
+    
+    if force_qt6:
+        try:
+            from PyQt6.QtWidgets import QApplication, QMessageBox
+            os.environ['PYQT6'] = "1"
+        except ImportError as e:
+            print("Error while import pyqt6")
+            print(e)
+            sys.exit(-1)
+    
+    if 'PYQT6' not in os.environ:
+        try:
+            import sip
+            sip.setapi('QVariant', 3)
+            from PyQt5.QtWidgets import QApplication, QMessageBox
+        except ImportError as e:
+            print("Couldn't import Qt5 dependencies. "
+                  "Make sure you installed the PyQt5 package.")
+            # print(e)
+            sys.exit(-1)
+    
     try:
         from PIL import Image
         os.environ['imaging_available'] = "1"

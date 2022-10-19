@@ -1,6 +1,7 @@
 import datetime
 
-from PyQt5 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
+from PyQt6.QtWidgets import QGraphicsItem
 
 from trackma import utils
 from trackma.ui.qt.thumbs import ThumbManager
@@ -32,9 +33,9 @@ class ShowListModel(QtCore.QAbstractTableModel):
     editable_columns = [COL_MY_PROGRESS, COL_MY_SCORE]
 
     common_flags = \
-        QtCore.Qt.ItemIsSelectable | \
-        QtCore.Qt.ItemIsEnabled | \
-        QtCore.Qt.ItemNeverHasChildren
+        QtCore.Qt.ItemFlag.ItemIsSelectable | \
+        QtCore.Qt.ItemFlag.ItemIsEnabled | \
+        QtCore.Qt.ItemFlag.ItemNeverHasChildren
 
     date_format = "%Y-%m-%d"
 
@@ -150,7 +151,7 @@ class ShowListModel(QtCore.QAbstractTableModel):
         return len(self.columns)
 
     def headerData(self, section, orientation, role):
-        if role == QtCore.Qt.DisplayRole and orientation == QtCore.Qt.Horizontal:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole and orientation == QtCore.Qt.Orientation.Horizontal:
             return self.columns[section]
 
     def setData(self, index, value, role):

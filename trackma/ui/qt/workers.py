@@ -19,7 +19,7 @@ import urllib.error
 import urllib.request
 from io import BytesIO
 
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 try:
     from PIL import Image

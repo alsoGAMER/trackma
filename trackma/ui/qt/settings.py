@@ -14,8 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import (QAbstractItemView, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox,
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox,
                              QFileDialog, QFormLayout, QFrame, QGridLayout, QGroupBox, QLabel, QLineEdit, QListWidget,
                              QListWidgetItem, QPushButton, QRadioButton, QScrollArea, QSpinBox, QSplitter,
                              QStackedWidget, QTabWidget, QVBoxLayout, QWidget)
@@ -25,7 +25,7 @@ from trackma.ui.qt.delegates import ShowsTableDelegate
 from trackma.ui.qt.themedcolorpicker import ThemedColorPicker
 from trackma.ui.qt.util import FilterBar, getColor, getIcon
 
-pyqt_version = 5
+pyqt_version = 6
 
 
 class SettingsDialog(QDialog):

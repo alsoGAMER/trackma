@@ -19,8 +19,9 @@ import os
 import subprocess
 import sys
 
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QActionGroup, QApplication, QCheckBox, QComboBox,
+from PyQt6 import QtCore, QtGui
+from PyQt6.QtGui import QAction, QActionGroup
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
                              QDoubleSpinBox, QFormLayout, QHBoxLayout, QHeaderView, QInputDialog, QLabel, QLineEdit,
                              QMainWindow, QMenu, QMessageBox, QProgressBar, QPushButton, QSpinBox, QStyle,
                              QStyleOptionButton, QSystemTrayIcon, QTabBar, QToolButton, QVBoxLayout, QWidget)
@@ -36,7 +37,7 @@ from trackma.ui.qt.util import FilterBar, getIcon
 from trackma.ui.qt.widgets import ShowsTableView
 from trackma.ui.qt.workers import EngineWorker, ImageWorker
 
-pyqt_version = 5
+pyqt_version = 6
 
 
 class MainWindow(QMainWindow):
@@ -152,7 +153,7 @@ class MainWindow(QMainWindow):
         self.action_add.triggered.connect(self.s_add)
         self.action_delete = QAction(getIcon('edit-delete'), '&Delete', self)
         self.action_delete.setStatusTip('Remove this show from your list.')
-        self.action_delete.setShortcut(QtCore.Qt.Key_Delete)
+        self.action_delete.setShortcut(QtCore.Qt.Key.Key_Delete)
         self.action_delete.triggered.connect(self.s_delete)
         action_quit = QAction(getIcon('application-exit'), '&Quit', self)
         action_quit.setShortcut('Ctrl+Q')
@@ -221,16 +222,16 @@ class MainWindow(QMainWindow):
         # Make icons for viewed episodes
         rect = QtCore.QSize(16, 16)
         buffer = QtGui.QPixmap(rect)
-        ep_icon_states = {'all': QStyle.State_On,
-                          'part': QStyle.State_NoChange,
-                          'none': QStyle.State_Off}
+        ep_icon_states = {'all': QStyle.StateFlag.State_On,
+                          'part': QStyle.StateFlag.State_NoChange,
+                          'none': QStyle.StateFlag.State_Off}
         self.ep_icons = {}
         for key, state in ep_icon_states.items():
-            buffer.fill(QtCore.Qt.transparent)
+            buffer.fill(QtCore.Qt.GlobalColor.transparent)
             painter = QtGui.QPainter(buffer)
             opt = QStyleOptionButton()
             opt.state = state
-            self.style().drawPrimitive(QStyle.PE_IndicatorMenuCheckMark, opt, painter)
+            self.style().drawPrimitive(QStyle.PrimitiveElement.PE_IndicatorMenuCheckMark, opt, painter)
             self.ep_icons[key] = QtGui.QIcon(buffer)
             painter.end()
 
