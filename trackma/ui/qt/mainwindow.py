@@ -18,6 +18,7 @@ import base64
 import os
 import subprocess
 import sys
+from enum import Enum
 
 from PyQt6 import QtCore, QtGui
 from PyQt6.QtGui import QAction, QActionGroup
@@ -351,7 +352,7 @@ class MainWindow(QMainWindow):
         self.show_image = QLabel('Trackma-qt')
         self.show_image.setFixedHeight(149)
         self.show_image.setMinimumWidth(100)
-        self.show_image.setAlignment(QtCore.Qt.AlignCenter)
+        self.show_image.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         show_progress_label = QLabel('Progress:')
         self.show_progress = QSpinBox()
         self.show_progress_bar = QProgressBar()
@@ -391,7 +392,7 @@ class MainWindow(QMainWindow):
         small_btns_hbox.addWidget(self.show_dec_btn)
         small_btns_hbox.addWidget(self.show_play_btn)
         small_btns_hbox.addWidget(self.show_inc_btn)
-        small_btns_hbox.setAlignment(QtCore.Qt.AlignCenter)
+        small_btns_hbox.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
         left_box.addRow(self.show_image)
         left_box.addRow(self.show_progress_bar)
@@ -633,9 +634,9 @@ class MainWindow(QMainWindow):
 
     def _apply_view(self):
         if self.config['inline_edit']:
-            self.view.setEditTriggers(QAbstractItemView.AllEditTriggers)
+            self.view.setEditTriggers(QAbstractItemView.EditTrigger.AllEditTriggers)
         else:
-            self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)
+            self.view.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
     def _apply_tray(self):
         if self.tray.isVisible() and not self.config['show_tray']:
@@ -760,8 +761,16 @@ class MainWindow(QMainWindow):
 
     def _init_view(self):
         # Set view options
+
+        if self.config['sort_order'] == 0:
+            sort_order = QtCore.Qt.SortOrder.AscendingOrder
+        elif self.config['sort_order'] == 1:
+            sort_order = QtCore.Qt.SortOrder.DescendingOrder
+        else:
+            sort_order = QtCore.Qt.SortOrder.DescendingOrder
+
         self.view.sortByColumn(
-            self.config['sort_index'], self.config['sort_order'])
+            self.config['sort_index'], sort_order)
 
         # Hide invisible columns
         for i, column in enumerate(self.view.model().sourceModel().columns):
@@ -772,6 +781,10 @@ class MainWindow(QMainWindow):
             self.view.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
             self.view.horizontalHeader().setSectionResizeMode(2, QHeaderView.Fixed)
             self.view.horizontalHeader().setSectionResizeMode(3, QHeaderView.Fixed)
+        elif pyqt_version == 6:
+            self.view.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+            self.view.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
+            self.view.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
         else:
             self.view.horizontalHeader().setResizeMode(1, QHeaderView.Stretch)
             self.view.horizontalHeader().setResizeMode(2, QHeaderView.Fixed)
@@ -828,7 +841,7 @@ class MainWindow(QMainWindow):
         # Update information
         metrics = QtGui.QFontMetrics(self.show_title.font())
         title = metrics.elidedText(
-            show['title'], QtCore.Qt.ElideRight, self.show_title.width())
+            show['title'], QtCore.Qt.TextElideMode.ElideRight, self.show_title.width())
         self.show_title.setText(title)
 
         self.show_progress.setValue(show['my_progress'])
@@ -1046,7 +1059,10 @@ class MainWindow(QMainWindow):
     def s_filter_changed(self):
         # TODOMVC DEPRECATED
         expression = self.show_filter.text()
-        casesens = self.show_filter_casesens.isChecked()
+        if self.show_filter_casesens.isChecked():
+            casesens = QtCore.Qt.CaseSensitivity.CaseSensitive
+        else:
+            casesens = QtCore.Qt.CaseSensitivity.CaseInsensitive
 
         # Determine if a show matches a filter. True -> match -> do not hide
         # Advanced search: Separate the expression into specific field terms, fail if any are not met
@@ -1285,7 +1301,7 @@ class MainWindow(QMainWindow):
     def s_show_menu_columns(self, pos):
         globalPos = self.sender().mapToGlobal(pos)
         globalPos += QtCore.QPoint(3, 3)
-        self.menu_columns.exec_(globalPos)
+        self.menu_columns.exec(globalPos)
 
     def s_toggle_column(self, visible):
         w = self.sender()

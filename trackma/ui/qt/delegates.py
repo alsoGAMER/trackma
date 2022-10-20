@@ -165,11 +165,11 @@ class ShowsTableDelegate(QStyledItemDelegate):
                 prog_options.rect = rect
                 prog_options.text = '%d%%' % (value*100/maximum)
                 prog_options.textVisible = self._show_text
-                option.widget.style().drawControl(QStyle.CE_ProgressBar, prog_options, painter)
+                option.widget.style().drawControl(QStyle.ControlElement.CE_ProgressBar, prog_options, painter)
 
             elif self._bar_style is self.BarStyle04:
                 painter.setBrush(getColor(self.colors['progress_bg']))
-                painter.setPen(QtCore.Qt.transparent)
+                painter.setPen(QtCore.Qt.GlobalColor.transparent)
                 painter.drawRect(rect)
                 self.paintSubValue(painter, rect, subvalue, maximum)
                 if value > 0:

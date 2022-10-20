@@ -165,24 +165,24 @@ class ShowsTableView(QTableView):
         self.setModel(proxymodel)
 
         self.setItemDelegate(ShowsTableDelegate(self, palette=palette))
-        self.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.horizontalHeader().setHighlightSections(False)
-        if pyqt_version == 5:
+        if pyqt_version == 5 or pyqt_version == 6:
             self.horizontalHeader().setSectionsMovable(True)
         else:
             self.horizontalHeader().setMovable(True)
-        self.horizontalHeader().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.horizontalHeader().setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.verticalHeader().hide()
-        self.setGridStyle(QtCore.Qt.NoPen)
+        self.setGridStyle(QtCore.Qt.PenStyle.NoPen)
 
     def contextMenuEvent(self, event):
-        action = self.context_menu.exec_(event.globalPos())
+        action = self.context_menu.exec(event.globalPos())
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
 
-        if event.button() == QtCore.Qt.MidButton:
+        if event.button() == QtCore.Qt.MouseButton.MiddleButton:
             self.middleClicked.emit()
 
 

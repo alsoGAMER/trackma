@@ -105,6 +105,6 @@ def main(force_qt4=False, force_qt6=False):
     try:
         # keep the variable around to prevent it from being gc'ed
         main_window = MainWindow(debug)
-        sys.exit(app.exec_())
+        sys.exit(app.exec())
     except utils.TrackmaFatal as e:
-        QMessageBox.critical(None, 'Fatal Error', "{0}".format(e), QMessageBox.Ok)
+        QMessageBox.critical(None, 'Fatal Error', "{0}".format(e), QMessageBox.StandardButton.Ok)

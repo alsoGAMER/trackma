@@ -36,12 +36,17 @@ def getIcon(icon_name):
 
 def getColor(colorString):
     # Takes a color string in either #RRGGBB format or group,role format (using QPalette int values)
+    # print(f"colorstring {colorString}")
     if colorString[0] == "#":
         return QtGui.QColor(colorString)
     else:
         (group, role) = [int(i) for i in colorString.split(',')]
+        # print(f"group {group}")
+        # print(f"role {role}")
         if (0 <= group <= 2) and (0 <= role <= 19):
-            return QtGui.QColor(QtGui.QPalette().color(group, role))
+            return QtGui.QColor(QtGui.QPalette().color(QtGui.QPalette.ColorRole.Dark))
+            # FIXME
+            # return QtGui.QColor(QtGui.QPalette().color(group, role))
         else:
             # Failsafe - return black
             return QtGui.QColor()

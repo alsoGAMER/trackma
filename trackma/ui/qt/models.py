@@ -169,7 +169,7 @@ class ShowListModel(QtCore.QAbstractTableModel):
         row, column = index.row(), index.column()
         show = self.showlist[row]
 
-        if role == QtCore.Qt.DisplayRole:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole:
             if column == ShowListModel.COL_ID:
                 return show['id']
             elif column == ShowListModel.COL_TITLE:
@@ -207,15 +207,15 @@ class ShowListModel(QtCore.QAbstractTableModel):
                 return show.get('my_tags', '-')
             elif column == ShowListModel.COL_MY_STATUS:
                 return self.mediainfo['statuses_dict'][show['my_status']]
-        elif role == QtCore.Qt.BackgroundRole:
+        elif role == QtCore.Qt.ItemDataRole.BackgroundRole:
             return self.colors.get(row)
-        elif role == QtCore.Qt.DecorationRole:
+        elif role == QtCore.Qt.ItemDataRole.DecorationRole:
             if column == ShowListModel.COL_TITLE and show['id'] in self.playing:
                 return getIcon('media-playback-start')
-        elif role == QtCore.Qt.TextAlignmentRole:
+        elif role == QtCore.Qt.ItemDataRole.TextAlignmentRole:
             if column in [ShowListModel.COL_MY_PROGRESS, ShowListModel.COL_MY_SCORE]:
-                return QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
-        elif role == QtCore.Qt.ToolTipRole:
+                return QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignVCenter
+        elif role == QtCore.Qt.ItemDataRole.ToolTipRole:
             if column == ShowListModel.COL_PERCENT:
                 tooltip = "Watched: %d<br>" % show['my_progress']
                 if self.eps.get(row):
@@ -228,7 +228,7 @@ class ShowListModel(QtCore.QAbstractTableModel):
                 tooltip += "Total: %d" % show['total']
 
                 return tooltip
-        elif role == QtCore.Qt.EditRole:
+        elif role == QtCore.Qt.ItemDataRole.EditRole:
             if column == ShowListModel.COL_MY_PROGRESS:
                 return (show['my_progress'], show['total'], 0, 1)
             elif column == ShowListModel.COL_MY_SCORE:
@@ -242,7 +242,7 @@ class ShowListModel(QtCore.QAbstractTableModel):
 
     def flags(self, index):
         if index.column() in self.editable_columns:
-            return self.common_flags | QtCore.Qt.ItemIsEditable
+            return self.common_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         else:
             return self.common_flags
 
