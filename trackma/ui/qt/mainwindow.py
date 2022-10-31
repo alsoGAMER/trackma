@@ -18,7 +18,6 @@ import base64
 import os
 import subprocess
 import sys
-from enum import Enum
 
 from PyQt6 import QtCore, QtGui
 from PyQt6.QtGui import QAction, QActionGroup
@@ -516,11 +515,11 @@ class MainWindow(QMainWindow):
 
     def error(self, msg):
         self.status('Error: {}'.format(msg))
-        QMessageBox.critical(self, 'Error', str(msg), QMessageBox.Ok)
+        QMessageBox.critical(self, 'Error', str(msg), QMessageBox.StandardButton.Ok)
 
     def fatal(self, msg):
         QMessageBox.critical(
-            self, 'Fatal Error', "Fatal Error! Reason:\n\n{0}".format(msg), QMessageBox.Ok)
+            self, 'Fatal Error', "Fatal Error! Reason:\n\n{0}".format(msg), QMessageBox.StandardButton.Ok)
         self.accountman.set_default(None)
         self._busy()
         self.finish = False
@@ -1015,7 +1014,7 @@ class MainWindow(QMainWindow):
                 self.show()
 
     def s_tray_clicked(self, reason):
-        if reason == QSystemTrayIcon.Trigger:
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
             self.s_hide()
 
     def s_busy(self):
@@ -1175,9 +1174,9 @@ class MainWindow(QMainWindow):
             show = self.worker.engine.get_show_info(self.selected_show_id)
             reply = QMessageBox.question(self, 'Confirmation',
                                          'Are you sure you want to delete %s?' % show['title'],
-                                         QMessageBox.Yes, QMessageBox.No)
+                                         QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No)
 
-            if reply == QMessageBox.Yes:
+            if reply == QMessageBox.StandardButton.Yes:
                 self.worker_call('delete_show', self.r_generic, show)
 
     def s_scan_library(self):
@@ -1228,11 +1227,11 @@ class MainWindow(QMainWindow):
             reply = QMessageBox.question(self, 'Confirmation',
                                          'There are %d unsynced changes. Do you want to send them first? (Choosing No will discard them!)' % len(
                                              queue),
-                                         QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+                                         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel)
 
-            if reply == QMessageBox.Yes:
+            if reply == QMessageBox.StandardButton.Yes:
                 self.s_send(True)
-            elif reply == QMessageBox.No:
+            elif reply == QMessageBox.StandardButton.No:
                 self._busy(True)
                 self.worker_call('list_download', self.r_list_retrieved)
         else:
@@ -1285,7 +1284,7 @@ class MainWindow(QMainWindow):
         dialog = SettingsDialog(
             None, self.worker, self.config, self.configfile)
         dialog.saved.connect(self._update_config)
-        dialog.exec_()
+        dialog.exec()
 
     def s_about(self):
         QMessageBox.about(self, 'About Trackma-qt %s' % utils.VERSION,
@@ -1376,9 +1375,9 @@ class MainWindow(QMainWindow):
         box = QMessageBox(self)
         box.setWindowTitle("Update prompt")
         box.setText(f"Do you want to update {show['title']} to {episode}?")
-        box.setIcon(QMessageBox.Question)
-        box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        box.setAttribute(QtCore.Qt.WA_ShowWithoutActivating)
+        box.setIcon(QMessageBox.Icon.Question)
+        box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        box.setAttribute(QtCore.Qt.WidgetAttribute.WA_ShowWithoutActivating)
         box.setModal(False)
         box.accepted.connect(lambda:
                 self.worker_call('set_episode', self.r_generic,
@@ -1392,7 +1391,7 @@ class MainWindow(QMainWindow):
         addwindow = AddDialog(
             None, self.worker, current_status, default=show['title'])
         addwindow.setModal(True)
-        if addwindow.exec_():
+        if addwindow.exec():
             self.worker_call('set_episode', self.r_generic,
                              addwindow.selected_show['id'], episode)
 

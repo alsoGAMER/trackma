@@ -55,7 +55,7 @@ class SettingsDialog(QDialog):
             getIcon('window-new'), 'User Interface', self.category_list)
         category_theme = QListWidgetItem(
             getIcon('applications-graphics'), 'Theme', self.category_list)
-        self.category_list.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.category_list.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.category_list.setCurrentRow(0)
         self.category_list.setMaximumWidth(
             self.category_list.sizeHintForColumn(0) + 15)
@@ -65,7 +65,7 @@ class SettingsDialog(QDialog):
         # Media tab
         page_media = QWidget()
         page_media_layout = QVBoxLayout()
-        page_media_layout.setAlignment(QtCore.Qt.AlignTop)
+        page_media_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         # Group: Media settings
         g_media = QGroupBox('Media settings')
@@ -116,7 +116,7 @@ class SettingsDialog(QDialog):
         self.plex_port = QLineEdit()
         self.plex_user = QLineEdit()
         self.plex_passw = QLineEdit()
-        self.plex_passw.setEchoMode(QLineEdit.Password)
+        self.plex_passw.setEchoMode(QLineEdit.EchoMode.Password)
         self.plex_obey_wait = QCheckBox()
 
         g_plex_layout = QGridLayout()
@@ -170,7 +170,7 @@ class SettingsDialog(QDialog):
         self.kodi_port = QLineEdit()
         self.kodi_user = QLineEdit()
         self.kodi_passw = QLineEdit()
-        self.kodi_passw.setEchoMode(QLineEdit.Password)
+        self.kodi_passw.setEchoMode(QLineEdit.EchoMode.Password)
         self.kodi_obey_wait = QCheckBox()
 
         g_kodi_layout = QGridLayout()
@@ -199,14 +199,14 @@ class SettingsDialog(QDialog):
         self.player_browse = QPushButton('Browse...')
         self.player_browse.clicked.connect(self.s_player_browse)
         lbl_searchdirs = QLabel('Media directories')
-        lbl_searchdirs.setAlignment(QtCore.Qt.AlignTop)
+        lbl_searchdirs.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         self.searchdirs = QListWidget()
         self.searchdirs_add = QPushButton('Add...')
         self.searchdirs_add.clicked.connect(self.s_searchdirs_add)
         self.searchdirs_remove = QPushButton('Remove')
         self.searchdirs_remove.clicked.connect(self.s_searchdirs_remove)
         self.searchdirs_buttons = QVBoxLayout()
-        self.searchdirs_buttons.setAlignment(QtCore.Qt.AlignTop)
+        self.searchdirs_buttons.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         self.searchdirs_buttons.addWidget(self.searchdirs_add)
         self.searchdirs_buttons.addWidget(self.searchdirs_remove)
         self.searchdirs_buttons.addWidget(QSplitter())
@@ -253,7 +253,7 @@ class SettingsDialog(QDialog):
         # Sync tab
         page_sync = QWidget()
         page_sync_layout = QVBoxLayout()
-        page_sync_layout.setAlignment(QtCore.Qt.AlignTop)
+        page_sync_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         # Group: Autoretrieve
         g_autoretrieve = QGroupBox('Autoretrieve')
@@ -321,7 +321,7 @@ class SettingsDialog(QDialog):
         # UI tab
         page_ui = QWidget()
         page_ui_layout = QFormLayout()
-        page_ui_layout.setAlignment(QtCore.Qt.AlignTop)
+        page_ui_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         # Group: Icon
         g_icon = QGroupBox('Notification Icon')
@@ -378,7 +378,7 @@ class SettingsDialog(QDialog):
         # Theming tab
         page_theme = QWidget()
         page_theme_layout = QFormLayout()
-        page_theme_layout.setAlignment(QtCore.Qt.AlignTop)
+        page_theme_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         # Group: Episode Bar
         g_ep_bar = QGroupBox('Episode Bar')
@@ -424,7 +424,7 @@ class SettingsDialog(QDialog):
             for (key2, label) in self.colors[key1]:
                 self.color_buttons.append(QPushButton())
                 # self.color_buttons[-1].setStyleSheet('background-color: ' + getColor(self.config['colors'][key]).name())
-                self.color_buttons[-1].setFocusPolicy(QtCore.Qt.NoFocus)
+                self.color_buttons[-1].setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
                 self.color_buttons[-1].clicked.connect(
                     self.s_color_picker(key2, False))
                 self.syscolor_buttons.append(QPushButton('System Colors'))
@@ -457,12 +457,12 @@ class SettingsDialog(QDialog):
 
         # Bottom buttons
         bottombox = QDialogButtonBox(
-            QDialogButtonBox.Ok
-            | QDialogButtonBox.Apply
-            | QDialogButtonBox.Cancel
+            QDialogButtonBox.StandardButton.Ok
+            | QDialogButtonBox.StandardButton.Apply
+            | QDialogButtonBox.StandardButton.Cancel
         )
         bottombox.accepted.connect(self.s_save)
-        bottombox.button(QDialogButtonBox.Apply).clicked.connect(self._save)
+        bottombox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self._save)
         bottombox.rejected.connect(self.reject)
 
         # Main layout finish

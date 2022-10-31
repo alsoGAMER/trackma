@@ -1,7 +1,6 @@
 import datetime
 
 from PyQt6 import QtCore, QtGui
-from PyQt6.QtWidgets import QGraphicsItem
 
 from trackma import utils
 from trackma.ui.qt.thumbs import ThumbManager
@@ -274,13 +273,13 @@ class AddTableModel(QtCore.QAbstractTableModel):
         return 3
 
     def headerData(self, section, orientation, role):
-        if role == QtCore.Qt.DisplayRole and orientation == QtCore.Qt.Horizontal:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole and orientation == QtCore.Qt.Orientation.Horizontal:
             return self.columns[section]
 
     def data(self, index, role):
         row, column = index.row(), index.column()
 
-        if role == QtCore.Qt.DisplayRole:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole:
             item = self.results[row]
 
             if column == 0:
@@ -315,7 +314,7 @@ class AddListModel(QtCore.QAbstractListModel):
     def gotThumb(self, iid, thumb):
         iid = int(iid)
         self.thumbs[iid] = thumb.scaled(
-            100, 140, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+            100, 140, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
 
         self.dataChanged.emit(self.index(iid), self.index(iid))
 
@@ -338,7 +337,7 @@ class AddListModel(QtCore.QAbstractListModel):
 
                     if self.pool.exists(filename):
                         self.thumbs[row] = self.pool.getThumb(filename).scaled(
-                            100, 140, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                            100, 140, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
                     else:
                         self.pool.queueDownload(row, item['image'], filename)
 
@@ -352,11 +351,11 @@ class AddListModel(QtCore.QAbstractListModel):
 
     def data(self, index, role):
         row = index.row()
-        if role == QtCore.Qt.DisplayRole:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole:
             return self.results[row]
-        elif role == QtCore.Qt.DecorationRole:
+        elif role == QtCore.Qt.ItemDataRole.DecorationRole:
             return self.thumbs.get(row)
-        elif role == QtCore.Qt.BackgroundRole:
+        elif role == QtCore.Qt.ItemDataRole.BackgroundRole:
             t = self.results[row].get('type')
             if t == utils.Type.TV:
                 return QtGui.QColor(202, 253, 150)
@@ -374,8 +373,8 @@ class AddListModel(QtCore.QAbstractListModel):
 
 class AddListProxy(QtCore.QSortFilterProxyModel):
     def lessThan(self, left, right):
-        leftData = self.sourceModel().data(left, QtCore.Qt.DisplayRole)
-        rightData = self.sourceModel().data(right, QtCore.Qt.DisplayRole)
+        leftData = self.sourceModel().data(left, QtCore.Qt.ItemDataRole.DisplayRole)
+        rightData = self.sourceModel().data(right, QtCore.Qt.ItemDataRole.DisplayRole)
 
         return leftData['type'] < rightData['type']
 
@@ -403,7 +402,7 @@ class ShowListProxy(QtCore.QSortFilterProxyModel):
             for col in range(self.sourceModel().columnCount(source_parent)):
                 index = self.sourceModel().index(source_row, col)
                 if (col in self.filter_columns and
-                        self.filter_columns[col] not in str(self.sourceModel().data(index, QtCore.Qt.DisplayRole))):
+                        self.filter_columns[col] not in str(self.sourceModel().data(index, QtCore.Qt.ItemDataRole.DisplayRole))):
                     return False
 
         return super(ShowListProxy, self).filterAcceptsRow(source_row, source_parent)

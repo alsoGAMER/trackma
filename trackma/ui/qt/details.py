@@ -29,7 +29,7 @@ class DetailsDialog(QDialog):
         main_layout = QVBoxLayout()
         details = DetailsWidget(self, worker)
 
-        bottom_buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        bottom_buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         bottom_buttons.setCenterButtons(True)
         bottom_buttons.rejected.connect(self.close)
 

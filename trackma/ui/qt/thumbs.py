@@ -59,7 +59,7 @@ class ThumbManager(QtCore.QObject):
         data = reply.readAll()
         image = QtGui.QImage.fromData(data)
         thumb = image.scaled(
-            200, 280, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+            200, 280, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
         thumb.save(fname)
 
         self.downloads.pop(fname)
